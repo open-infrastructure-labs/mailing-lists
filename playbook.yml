@@ -1,0 +1,34 @@
+---
+- hosts: localhost
+  gather_facts: false
+  tags: k8s
+  tasks:
+    - k8s_info:
+        api_version: v1
+        kind: User
+      register: users
+      changed_when: false
+
+    - set_fact:
+        email_addresses: "{{ users.resources|json_query('[].metadata.name') }}"
+
+- hosts: mailman_servers
+  gather_facts: false
+  collections:
+    - moc.mailman
+
+  tasks:
+    - mailman_list:
+        name: operate-first-users
+        owner: lars@redhat.com
+        notify_owner: false
+
+    - mailman_list_members:
+        name: operate-first-users
+        notify_members: false
+        notify_admins: false
+        members: "{{ hostvars.localhost.email_addresses }}"
+      register: result
+
+    - debug:
+        var: result
