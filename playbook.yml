@@ -20,7 +20,7 @@
   tasks:
     - mailman_list:
         name: operate-first-users
-        owner: lars@redhat.com
+        owner: "{{ operate_first_owner }}"
         notify_owner: false
         config:
           default_member_moderation: true
