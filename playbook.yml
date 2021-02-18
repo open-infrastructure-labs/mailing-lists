@@ -22,6 +22,11 @@
         name: operate-first-users
         owner: lars@redhat.com
         notify_owner: false
+        config:
+          default_member_moderation: true
+          member_moderation_action: 2
+          generic_nonmember_action: 3
+          accept_these_nonmembers: "{{ operate_first_posters }}"
 
     - mailman_list_members:
         name: operate-first-users
@@ -30,5 +35,7 @@
         members: "{{ hostvars.localhost.email_addresses }}"
       register: result
 
-    - debug:
-        var: result
+    - tags: [listinfo]
+      mailman_list_info:
+        name: operate-first-users
+      register: listinfo
