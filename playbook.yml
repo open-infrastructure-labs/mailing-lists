@@ -24,8 +24,8 @@
         notify_owner: false
         config:
           default_member_moderation: true
-          member_moderation_action: 2
-          generic_nonmember_action: 3
+          member_moderation_action: 1
+          generic_nonmember_action: 2
           accept_these_nonmembers: "{{ operate_first_posters }}"
 
     - mailman_list_members:
