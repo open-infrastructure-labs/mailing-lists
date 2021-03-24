@@ -27,13 +27,14 @@
   tasks:
     - mailman_list:
         name: operate-first-users
-        owner: "{{ operate_first_owner }}"
+        owner: "{{ operate_first_owners|first }}"
         notify_owner: false
         config:
           default_member_moderation: true
           member_moderation_action: 1
           generic_nonmember_action: 2
           accept_these_nonmembers: "{{ operate_first_posters }}"
+          owner: "{{ operate_first_owners }}"
 
     - mailman_list_members:
         name: operate-first-users
