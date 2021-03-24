@@ -3,14 +3,21 @@
   gather_facts: false
   tags: k8s
   tasks:
-    - k8s_info:
+    - name: get list of users from openshift
+      k8s_info:
         api_version: v1
         kind: User
       register: users
       changed_when: false
 
-    - set_fact:
+    - name: extract email addresses
+      set_fact:
         email_addresses: "{{ users.resources|json_query('[].metadata.name') }}"
+
+    - name: write address to file
+      copy:
+        dest: addresses.json
+        content: "{{ email_addresses|to_nice_json }}"
 
 - hosts: mailman_servers
   gather_facts: false
